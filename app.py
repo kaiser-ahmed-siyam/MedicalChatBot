@@ -1,46 +1,77 @@
 from flask import Flask, render_template, jsonify, request
-from src.helper import download_hugging_face_embeddings
-from langchain_pinecone import PineconeVectorStore
-from langchain_openai import ChatOpenAI
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+from src.helper import download_hugging_face_embeddings, load_pdf_file, filter_to_minimal_docs, text_split
+from langchain_groq import ChatGroq
+from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 from src.prompt import *
+
+from langchain_core.documents import Document
 import os
 
 app = Flask(__name__)
 
 load_dotenv()
 
-PINECONE_API_KEY=os.environ.get('PINECONE_API_KEY')
-OPENAI_API_KEY=os.environ.get('OPENAI_API_KEY')
+GROQ_API_KEY=os.environ.get('GROQ_API_KEY')
 
-os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+os.environ["GROQ_API_KEY"] = GROQ_API_KEY
+
 
 embeddings = download_hugging_face_embeddings()
 
-index_name = "medical-bot" 
-# Embed each chunk and upsert the embeddings into your Pinecone index.
-docsearch = PineconeVectorStore.from_existing_index(
-    index_name=index_name,
-    embedding=embeddings
+# index_name = "medical-bot" 
+# # Embed each chunk and upsert the embeddings into your Pinecone index.
+# docsearch = PineconeVectorStore.from_existing_index(
+#     index_name=index_name,
+#     embedding=embeddings
+# )
+
+# Load your PDF documents here (replace with your actual document loading logic)
+from langchain_community.document_loaders import PyPDFLoader
+data = load_pdf_file(data='D:\\GanAi projects\\MedicalChatBot\\data')
+
+pdf_gen=""
+for page in data:
+    pdf_gen += page.page_content
+
+
+document_pdf_gen = [Document(page_content= t) for t in text_split(pdf_gen)]
+
+vectorsstore = FAISS.from_documents(document_pdf_gen,
+                                     download_hugging_face_embeddings())
+
+# retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
+retrieve = vectorsstore.as_retriever()
+
+llm=ChatGroq(
+    model="openai/gpt-oss-20b",
+    temperature=0,
+    
 )
+# prompt = ChatPromptTemplate.from_messages(
+#     [
+#         ("system", system_prompt),
+#         ("human", "{input}"),
+#     ]
+# )
 
+# question_answer_chain = create_stuff_documents_chain(chatModel, prompt)
+# rag_chain = create_retrieval_chain(retriever, question_answer_chain)
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 
-retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
+# retriever = your_vectorstore.as_retriever()
 
-chatModel = ChatOpenAI(model="gpt-4o")
-prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", system_prompt),
-        ("human", "{input}"),
-    ]
+rag_chain = (
+    {
+        "context": retrieve,   # retrieves relevant chunks
+        "question": RunnablePassthrough()
+    }
+    | prompt
+    | llm
+    | StrOutputParser()
 )
-
-question_answer_chain = create_stuff_documents_chain(chatModel, prompt)
-rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
 
 @app.route("/")
@@ -51,9 +82,9 @@ def index():
 @app.route("/get", methods=["GET", "POST"])
 def chat():
     msg = request.form["msg"]
-    input = msg
-    print(input)
-    response = rag_chain.invoke({"input": msg})
+    question = msg
+    print(question)
+    response = rag_chain.invoke({"question": msg})
     print("Response : ", response["answer"])
     return str(response["answer"])
 

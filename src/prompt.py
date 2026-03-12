@@ -1,4 +1,5 @@
-prompt = ChatPromptTemplate.from_messages([("system", """
+from langchain_core.prompts import ChatPromptTemplate
+system_prompt = (""""
 You are a clinical medical AI assistant trained to analyze medical literature.
 
 Rules:
@@ -15,13 +16,10 @@ If the question asks for:
 - Emergency symptom → Advise immediate medical consultation.
 
 Always maintain a neutral, evidence-based tone.
-"""),
-
-    ("human", """
-Medical Context:
-{context}
-
-Patient Question:
-{question}
 """)
-])
+prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", system_prompt),
+        ("human", "{input}"),
+    ]
+)
