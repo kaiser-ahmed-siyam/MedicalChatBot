@@ -84,9 +84,9 @@ def chat():
     msg = request.form["msg"]
     question = msg
     print(question)
-    response = rag_chain.invoke({"question": msg})
-    print("Response : ", response["answer"])
-    return str(response["answer"])
+    response = rag_chain.invoke(msg)
+    print("Response : ", response)
+    return str(response)
 
 
 

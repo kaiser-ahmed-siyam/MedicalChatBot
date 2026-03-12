@@ -16,10 +16,12 @@ If the question asks for:
 - Emergency symptom → Advise immediate medical consultation.
 
 Always maintain a neutral, evidence-based tone.
+context: 
+{context}                 
 """)
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
-        ("human", "{input}"),
+        ("human", "{question}"),
     ]
 )
