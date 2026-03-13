@@ -3,9 +3,7 @@ langchain
 flask
 pypdf
 python-dotenv
-
 langchain-community
-langchain-openai
 langchain-groq
 langchain_huggingface
 sentence-transformers
