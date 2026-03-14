@@ -18,8 +18,6 @@ GROQ_API_KEY=os.environ.get('GROQ_API_KEY')
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
 
-embeddings = download_hugging_face_embeddings()
-
 # index_name = "medical-bot" 
 # # Embed each chunk and upsert the embeddings into your Pinecone index.
 # docsearch = PineconeVectorStore.from_existing_index(
@@ -91,5 +89,6 @@ def chat():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+     port = int(os.environ.get("PORT", 10000))
+     app.run(host="0.0.0.0", port=port, debug=True)
+    
