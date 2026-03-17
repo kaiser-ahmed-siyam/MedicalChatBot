@@ -1,3 +1,4 @@
+print("🔥 Starting app.py...")
 from flask import Flask, render_template, request
 from src.helper import (
     download_hugging_face_embeddings,
