@@ -28,15 +28,11 @@ os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 # Load your PDF documents here (replace with your actual document loading logic)
 from langchain_community.document_loaders import PyPDFLoader
 data = load_pdf_file(data='D:\\GanAi projects\\MedicalChatBot\\data')
-
-pdf_gen=""
-for page in data:
-    pdf_gen += page.page_content
+minimal_docs = filter_to_minimal_docs(data)
+text_chunks = text_split(minimal_docs)
 
 
-document_pdf_gen = [Document(page_content= t) for t in text_split(pdf_gen)]
-
-vectorsstore = FAISS.from_documents(document_pdf_gen,
+vectorsstore = FAISS.from_documents(text_chunks,
                                      download_hugging_face_embeddings())
 
 # retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
@@ -47,15 +43,7 @@ llm=ChatGroq(
     temperature=0,
     
 )
-# prompt = ChatPromptTemplate.from_messages(
-#     [
-#         ("system", system_prompt),
-#         ("human", "{input}"),
-#     ]
-# )
 
-# question_answer_chain = create_stuff_documents_chain(chatModel, prompt)
-# rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 

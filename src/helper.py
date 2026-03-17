@@ -44,13 +44,13 @@ def filter_to_minimal_docs(docs: List[Document]) -> List[Document]:
 #     return text_chunks
 
 
-def text_split(pdf_gen):
-    splitter_pdf_gen =  RecursiveCharacterTextSplitter(
+def text_split(minimal_docs):
+    splitter_doc_gen =  RecursiveCharacterTextSplitter(
         chunk_size = 800,
-        chunk_overlap = 150
+        chunk_overlap = 50
     )
-    chunk_pdf_gen = splitter_pdf_gen.split_text(pdf_gen)
-    return chunk_pdf_gen  
+    text_chunk = splitter_doc_gen.split_documents(minimal_docs)
+    return text_chunk
 
 # #Download the Embeddings from HuggingFace 
 def download_hugging_face_embeddings():
