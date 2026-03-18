@@ -70,7 +70,7 @@ def index():
     return render_template('chat.html')
 
 
-@app.route("/get", methods=["POST"])
+@app.route("/get", methods=["GET","POST"])
 def chat():
     initialize_rag()  # 🔥 Load only when needed
 
@@ -81,13 +81,23 @@ def chat():
 
     print("Response:", response)
     return str(response)
+# @app.route("/get", methods=["GET", "POST"])
+# def chat():
+#     msg = request.form["msg"]
+#     question = msg
+#     print(question)
+#     response = rag_chain.invoke(msg)
+#     print("Response : ", response)
+#     return str(response)
+
 
 
 # ✅ REQUIRED FOR RENDER
 if __name__ == '__main__':
     print("🔥 Starting Flask app...")
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(debug=True)
+    # port = int(os.environ.get("PORT", 10000))
+    # app.run(host="0.0.0.0", port=port)
 
 # from flask import Flask, render_template, jsonify, request
 # from src.helper import download_hugging_face_embeddings, load_pdf_file, filter_to_minimal_docs, text_split
