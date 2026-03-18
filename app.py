@@ -1,5 +1,5 @@
 print("🔥 Starting app.py...")
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 from src.helper import (
     download_hugging_face_embeddings,
     load_pdf_file,
@@ -74,22 +74,13 @@ def index():
 def chat():
     initialize_rag()  # 🔥 Load only when needed
 
-    msg = request.form["msg"]
+    msg = request.form.get("msg")
     print("Question:", msg)
 
     response = rag_chain.invoke(msg)
 
     print("Response:", response)
-    return str(response)
-# @app.route("/get", methods=["GET", "POST"])
-# def chat():
-#     msg = request.form["msg"]
-#     question = msg
-#     print(question)
-#     response = rag_chain.invoke(msg)
-#     print("Response : ", response)
-#     return str(response)
-
+    return jsonify({"answer": str(response)})
 
 
 # ✅ REQUIRED FOR RENDER
