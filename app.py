@@ -95,9 +95,8 @@ def chat():
 # ✅ REQUIRED FOR RENDER
 if __name__ == '__main__':
     print("🔥 Starting Flask app...")
-    app.run(debug=True)
-    # port = int(os.environ.get("PORT", 10000))
-    # app.run(host="0.0.0.0", port=port)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
 
 # from flask import Flask, render_template, jsonify, request
 # from src.helper import download_hugging_face_embeddings, load_pdf_file, filter_to_minimal_docs, text_split
