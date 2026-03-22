@@ -8,13 +8,18 @@ Clone the repository
 ```bash
 Project repo: https://github.com/
 ```
-### STEP 01- Create a conda environment after opening the repository
+### STEP 01- Create a virtual environment after opening the repository
 
 ```bash
-
+python -m venv venv
 ```
 
 ```bash
-conda activate medibot
+venv/Scripts/Activate.ps1
+
 ```
-#### Python version 3.11
+```bash
+python app.py # to run the app localhost 
+
+```
+#### Python version 3.11.9

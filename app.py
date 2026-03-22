@@ -80,14 +80,16 @@ def chat():
     response = rag_chain.invoke(msg)
 
     print("Response:", response)
-    return jsonify({"answer": str(response)})
+    # return jsonify({"answer": str(response)})
+    return str(response)
 
 
 # ✅ REQUIRED FOR RENDER
 if __name__ == '__main__':
     print("🔥 Starting Flask app...")
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
+    # app.run(host="0.0.0.0", port=1441, debug=True)
 
 # from flask import Flask, render_template, jsonify, request
 # from src.helper import download_hugging_face_embeddings, load_pdf_file, filter_to_minimal_docs, text_split
@@ -109,16 +111,9 @@ if __name__ == '__main__':
 # os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
 
-# # index_name = "medical-bot" 
-# # # Embed each chunk and upsert the embeddings into your Pinecone index.
-# # docsearch = PineconeVectorStore.from_existing_index(
-# #     index_name=index_name,
-# #     embedding=embeddings
-# # )
-
 # # Load your PDF documents here (replace with your actual document loading logic)
 # from langchain_community.document_loaders import PyPDFLoader
-# data = load_pdf_file(data='D:\\GanAi projects\\MedicalChatBot\\data')
+# data = load_pdf_file(data = 'data/')
 # minimal_docs = filter_to_minimal_docs(data)
 # text_chunks = text_split(minimal_docs)
 
