@@ -69,10 +69,11 @@ def initialize_rag():
 def index():
     return render_template('chat.html')
 
+initialize_rag()  # 🔥 Load only when needed
 
 @app.route("/get", methods=["GET","POST"])
 def chat():
-    initialize_rag()  # 🔥 Load only when needed
+    
 
     msg = request.form.get("msg")
     print("Question:", msg)
