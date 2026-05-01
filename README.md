@@ -23,3 +23,6 @@ python app.py # to run the app localhost
 
 ```
 #### Python version 3.11.9
+
+### Run the app
+gunicorn app:app --workers 1 --timeout 120 --bind 0.0.0.0:$PORT

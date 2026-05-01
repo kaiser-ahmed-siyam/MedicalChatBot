@@ -76,7 +76,7 @@ def initialize_rag():
 # ✅ HOME ROUTE
 @app.route("/")
 def index():
-    return render_template('templates\chat.html')
+    return render_template('templates//chat.html')
 
 
 # ✅ HEALTH CHECK (IMPORTANT FOR DEBUGGING)
