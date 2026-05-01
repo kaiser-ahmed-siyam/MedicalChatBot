@@ -76,7 +76,7 @@ def initialize_rag():
 # ✅ HOME ROUTE
 @app.route("/")
 def index():
-    return render_template('chat.html')
+    return render_template('templates\chat.html')
 
 
 # ✅ HEALTH CHECK (IMPORTANT FOR DEBUGGING)
@@ -112,7 +112,7 @@ def chat():
 if __name__ == '__main__':
     print("🔥 Starting Flask app...")
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 
 # print("🔥 Starting app.py...")

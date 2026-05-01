@@ -46,7 +46,7 @@ def filter_to_minimal_docs(docs: List[Document]) -> List[Document]:
 
 def text_split(minimal_docs):
     splitter_doc_gen =  RecursiveCharacterTextSplitter(
-        chunk_size = 800,
+        chunk_size = 300,
         chunk_overlap = 50
     )
     text_chunk = splitter_doc_gen.split_documents(minimal_docs)
