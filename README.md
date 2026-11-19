@@ -45,7 +45,7 @@ An AI-powered medical chatbot that delivers **context-aware and reliable health-
 
 ---
 # Project setup !!
-### STEP 01- Clone git repo
+### STEP 01- Clone the Git repo
 
 Clone the repository
 
@@ -62,7 +62,7 @@ python -m venv venv
 venv/Scripts/Activate.ps1
 
 ```
-### STEP 04- to run the app in localhos
+### STEP 04- Run the app on localhost
 ```bash
 python app.py  
 
